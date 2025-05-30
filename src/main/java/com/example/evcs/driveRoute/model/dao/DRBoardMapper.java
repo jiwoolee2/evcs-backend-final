@@ -20,8 +20,7 @@ public interface DRBoardMapper {
 	void insertDriveRouteFile(DRBoardVo driveRouteFileData);
 	
 	List<DRBoardDTO> getAllBoard(RowBounds rowBounds);
-	List<DRBoardDTO> getAllBoardImages( @Param("min") Long min,
-										@Param("max") Long max);
+
 
 	int countBoardByBoardNo(Long boardNo);
 
@@ -29,6 +28,7 @@ public interface DRBoardMapper {
 	int updateBoard(DRBoardVo drBoardData);
 	void updateBoardFile(DRBoardVo boardFileData);
 	void updateDriveRouteFile(DRBoardVo driveRouteFileData);
+	
 	// 게시글 삭제 상태바꾸
 	void deleteBoard(Long boardNo);
 	List<String> getBoardImageUrl(Long boardNo);

@@ -64,7 +64,7 @@
 				)
 	</insert>
 	
-	<select id="getAllBoard"
+<!--	<select id="getAllBoard"
 				resultType="DRBoardDTO">
 		SELECT
 				  B1.BOARD_NO boardNo
@@ -91,24 +91,57 @@
 		 ORDER
 		    BY
 		    	B1.BOARD_NO DESC
+	</select>-->
+	
+	<resultMap id="DRBoardMap" type="DRBoardDTO">
+		<id property="boardNo" column="BOARD_NO"/>
+		<result property="boardWriter" column="BOARD_WRITER"/>
+		<result property="boardContent" column="BOARD_CONTENT"/>
+		<result property="createDate" column="CREATE_DATE"/>
+		<result property="status" column="STATUS"/>
+	
+		<association property="driveRouteImage" javaType="com.evcs.driveRoute.model.dto.DriveRouteImageDTO">
+			<id property="boardNo" column="BOARD_NO"/>
+			<result property="driveRouteImage" column="DRIVE_ROUTE_IMAGE"/>
+		</association>
+		
+		<collection property="drBoardImage" ofType="com.evcs.driveRoute.model.dto.DRBoardImageDTO">
+			<id property="boardImageNo" column="BOARD_IMAGE_NO"/>
+			<result property="boardNo" column="BOARD_NO"/>
+			<result property="boardImage" column="BOARD_IMAGE"/>
+		</collection>
+		
+	</resultMap>
+	
+	<select id="getAllBoard"
+				resultMap="DRBoardMap">
+		SELECT
+				  DR.BOARD_NO boardNo
+				, DR.BOARD_WRITER boardWriter
+				, DR.BOARD_CONTENT boardContent
+				, BI.BOARD_IMAGE  boardImage
+				, BI.BOARD_IMAGE_NO  boardImageNo
+				, DR.CREATE_DATE createDate
+				, DR.STATUS status
+				, DI.DRIVE_ROUTE_IMAGE driveRouteImage
+				, EM.MEMBER_NICKNAME memberNickName
+				, (SELECT COUNT(*) 
+				   FROM EV_BOARD_LIKES BL 
+				   WHERE BL.BOARD_NO = DR.BOARD_NO) AS likeCount
+		  FROM
+		  		EV_DRIVE_ROUTE_BOARD DR
+		  JOIN
+		  		EV_MEMBER EM ON (EM.MEMBER_NO = DR.BOARD_WRITER)
+		  JOIN
+		  		EV_DRIVE_ROUTE_IMAGE DI ON (DI.BOARD_NO = DR.BOARD_NO)
+	RIGHT JOIN
+	      		EV_BOARD_IMAGE BI ON BI.BOARD_NO = DR.BOARD_NO
+		 WHERE
+		 		DR.STATUS = 'Y'
+		 ORDER
+		    BY
+		    	DR.BOARD_NO DESC
 	</select>
-	
-	<select id="getAllBoardImages" resultType="DRBoardDTO">
-	    SELECT
-	        BI.BOARD_NO AS boardNo,
-	        BI.BOARD_IMAGE AS boardImage
-	    FROM
-	        EV_BOARD_IMAGE BI
-	    JOIN
-	        EV_DRIVE_ROUTE_BOARD BR ON BR.BOARD_NO = BI.BOARD_NO
-	    WHERE
-	        BI.BOARD_NO BETWEEN #{min} AND #{max}
-	        AND BR.STATUS = 'Y'
-	    ORDER BY
-	        BR.BOARD_NO DESC
-	</select>
-	
-	
 	
 	<select id="countBoardByBoardNo"
 				parameterType="Long"

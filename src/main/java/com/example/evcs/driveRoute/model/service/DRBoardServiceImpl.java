@@ -163,14 +163,21 @@ public class DRBoardServiceImpl implements DRBoardService {
 			throw new NonExistingException("존재하지 않는 게시글입니다.");
 		} else {
 			drBoardMapper.deleteBoard(boardNo);
-			List<String> boardImageUrl = getBoardImageUrl(boardNo);
-			for(String url : boardImageUrl) {
-				s3Service.deleteFile(url);
-			}
-			
-			String driveRouteImageUrl = getDriveRouteImageUrl(boardNo);
-			s3Service.deleteFile(driveRouteImageUrl);
+			deleteBoardImage(boardNo);
+			deleteDriveRouteImage(boardNo);
 		}
+	}
+	
+	private void deleteBoardImage(Long boardNo) {
+		List<String> boardImageUrl = getBoardImageUrl(boardNo);
+		for(String url : boardImageUrl) {
+			s3Service.deleteFile(url);
+		}
+	}
+	
+	private void deleteDriveRouteImage(Long boardNo) {
+		String driveRouteImageUrl = getDriveRouteImageUrl(boardNo);
+		s3Service.deleteFile(driveRouteImageUrl);
 	}
 	
 	private int countByBoardNo(Long boardNo) {

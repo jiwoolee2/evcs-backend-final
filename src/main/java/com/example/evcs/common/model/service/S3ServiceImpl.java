@@ -42,20 +42,17 @@ public class S3ServiceImpl implements S3Service {
 	public String uploadFile(MultipartFile file, String fileLocation) {
 		
 		String filename = getFileName(file,fileLocation);
-		
 		PutObjectRequest request = PutObjectRequest.builder()
 				.bucket(bucketName)
 				.key(filename)
 				.contentType(file.getContentType())
 				.build();
-		
 		try {
 			s3Client.putObject(request,
 					RequestBody.fromInputStream(file.getInputStream(), file.getSize()));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
 		return "https://" + bucketName + ".s3." + region + ".amazonaws.com/"+ filename;
 	}
 
@@ -65,14 +62,11 @@ public class S3ServiceImpl implements S3Service {
 		try {
 			URL url = new URL(fileUrl);
 			String path = url.getPath().substring(1);
-			
 			DeleteObjectRequest deleteRequest = DeleteObjectRequest.builder()
 							.bucket(bucketName)
 							.key(path)
 							.build();
-			
 			s3Client.deleteObject(deleteRequest);
-			
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 		}
