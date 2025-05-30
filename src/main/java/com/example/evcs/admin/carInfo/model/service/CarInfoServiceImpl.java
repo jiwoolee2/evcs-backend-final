@@ -19,6 +19,7 @@ import com.example.evcs.admin.carInfo.model.vo.CarImage;
 import com.example.evcs.admin.carInfo.model.vo.CarInfo;
 import com.example.evcs.common.board.BoardUtil;
 import com.example.evcs.common.file.FileUtil;
+import com.example.evcs.common.model.service.S3Service;
 import com.example.evcs.exception.DuplicatedCarInfoException;
 import com.example.evcs.exception.NonExistingException;
 import com.example.evcs.util.model.dto.PageInfo;
@@ -32,9 +33,11 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class CarInfoServiceImpl implements CarInfoService{
 
+	private final S3Service s3Service;
 	private final CarInfoMapper carInfoMapper;
-	private FileUtil fileUtil = new FileUtil("uploads/car");
+	private final FileUtil fileUtil;
 	private final BoardUtil boardUtil;
+	private String fileLoaction = "car-image/";
 	
 	@Override
 	public void insertCar(CarInfoDTO carInfo, MultipartFile file) {
@@ -55,7 +58,7 @@ public class CarInfoServiceImpl implements CarInfoService{
 		
 		if(file != null && !file.isEmpty()) {
 			
-			filePath = fileUtil.saveFile(file);
+			filePath = s3Service.uploadFile(file,fileLoaction);
 			carInfoData = CarInfo.builder()
 									.carName(carInfo.getCarName())
 									.carTypeNo(carInfo.getCarTypeNo())
@@ -178,7 +181,7 @@ public class CarInfoServiceImpl implements CarInfoService{
 		
 		if(file != null && !file.isEmpty()) {
 			
-			filePath = fileUtil.saveFile(file);
+			filePath = s3Service.uploadFile(file,fileLoaction);
 			log.info(filePath);
 			carImageData = CarImage.builder()
 							.carNo(carInfo.getCarNo())

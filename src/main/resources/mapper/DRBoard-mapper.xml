@@ -8,6 +8,22 @@
 
 	<insert id="insertBoard"
 				parameterType = "DRBoardVo">
+				
+		<selectKey keyProperty="boardNo" order="AFTER" resultType="Long">
+			SELECT 
+					BOARD_NO boardNo 
+			  FROM		
+					(SELECT 
+							BOARD_NO
+					   FROM 
+					  		EV_DRIVE_ROUTE_BOARD
+					  ORDER
+					     BY
+					    	BOARD_NO DESC)
+			 WHERE
+			 		ROWNUM = 1
+		</selectKey>
+		
 		INSERT
 		  INTO
 		  		EV_DRIVE_ROUTE_BOARD(
@@ -19,63 +35,6 @@
 					, #{boardContent}
 				)
 	</insert>
-	
-	<select id="getBoardNo"
-				resultType ="Long">
-		SELECT  
-			 	BOARD_NO boardNo
-				FROM (
-				  SELECT
-				  		 BOARD_NO
-				  	FROM 
-				  		 EV_DRIVE_ROUTE_BOARD
-				   ORDER 
-				  	  BY 
-				  		 CREATE_DATE DESC
-					)
-		WHERE ROWNUM = 1
-	</select>
-	
-	<select id="getAllBoard"
-				resultType="DRBoardDTO">
-		SELECT
-				  B1.BOARD_NO boardNo
-				, B1.BOARD_WRITER boardWriter
-				, B1.BOARD_CONTENT boardContent
-				, B1.CREATE_DATE createDate
-				, B1.STATUS status
-				, I1.DRIVE_ROUTE_IMAGE driveRouteImage
-				, E1.MEMBER_NICKNAME memberNickName
-				, (SELECT COUNT(*) 
-				   FROM EV_BOARD_LIKES BL 
-				   WHERE BL.BOARD_NO = B1.BOARD_NO) AS likeCount
-		  FROM
-		  		EV_DRIVE_ROUTE_BOARD B1
-		  JOIN
-		  		EV_DRIVE_ROUTE_IMAGE I1 ON (I1.BOARD_NO = B1.BOARD_NO)
-		  JOIN
-		  		EV_MEMBER E1 ON (E1.MEMBER_NO = B1.BOARD_WRITER)
-		 WHERE
-		 		B1.STATUS = 'Y'
-		 ORDER
-		    BY
-		    	B1.BOARD_NO DESC
-	</select>
-	
-	<select id="getAllBoardImages" resultType="DRBoardDTO">
-	    SELECT
-	        BI.BOARD_NO AS boardNo,
-	        BI.BOARD_IMAGE AS boardImage
-	    FROM
-	        EV_BOARD_IMAGE BI
-	    JOIN
-	        EV_DRIVE_ROUTE_BOARD BR ON BR.BOARD_NO = BI.BOARD_NO
-	    WHERE
-	        BI.BOARD_NO BETWEEN #{min} AND #{max}
-	        AND BR.STATUS = 'Y'
-	    ORDER BY
-	        BR.BOARD_NO DESC
-	</select>
 	
 	<insert id="insertBoardFile"
 				parameterType="DRBoardVo">
@@ -104,6 +63,52 @@
 					, #{driveRouteImage}
 				)
 	</insert>
+	
+	<select id="getAllBoard"
+				resultType="DRBoardDTO">
+		SELECT
+				  B1.BOARD_NO boardNo
+				, B1.BOARD_WRITER boardWriter
+				, B1.BOARD_CONTENT boardContent
+				, BI.BOARD_IMAGE AS boardImage
+				, B1.CREATE_DATE createDate
+				, B1.STATUS status
+				, I1.DRIVE_ROUTE_IMAGE driveRouteImage
+				, E1.MEMBER_NICKNAME memberNickName
+				, (SELECT COUNT(*) 
+				   FROM EV_BOARD_LIKES BL 
+				   WHERE BL.BOARD_NO = B1.BOARD_NO) AS likeCount
+		  FROM
+		  		EV_DRIVE_ROUTE_BOARD B1
+		  JOIN
+		  		EV_MEMBER E1 ON (E1.MEMBER_NO = B1.BOARD_WRITER)
+		  JOIN
+		  		EV_DRIVE_ROUTE_IMAGE I1 ON (I1.BOARD_NO = B1.BOARD_NO)
+	RIGHT JOIN
+	      		EV_BOARD_IMAGE BI ON BI.BOARD_NO = B1.BOARD_NO
+		 WHERE
+		 		B1.STATUS = 'Y'
+		 ORDER
+		    BY
+		    	B1.BOARD_NO DESC
+	</select>
+	
+	<select id="getAllBoardImages" resultType="DRBoardDTO">
+	    SELECT
+	        BI.BOARD_NO AS boardNo,
+	        BI.BOARD_IMAGE AS boardImage
+	    FROM
+	        EV_BOARD_IMAGE BI
+	    JOIN
+	        EV_DRIVE_ROUTE_BOARD BR ON BR.BOARD_NO = BI.BOARD_NO
+	    WHERE
+	        BI.BOARD_NO BETWEEN #{min} AND #{max}
+	        AND BR.STATUS = 'Y'
+	    ORDER BY
+	        BR.BOARD_NO DESC
+	</select>
+	
+	
 	
 	<select id="countBoardByBoardNo"
 				parameterType="Long"
@@ -136,6 +141,28 @@
 		 WHERE
 		 		BOARD_NO = #{boardNo}
 	</update>
+	
+	<select id="getBoardImageUrl"
+				parameterType="Long"
+				resultType="String">
+		SELECT
+				BOARD_IMAGE
+		  FROM
+		  	    EV_BOARD_IMAGE
+		 WHERE
+		 		BOARD_NO = #{boardNo}
+	</select>
+	
+	<select id="getDriveRouteImageUrl"
+				parameterType="Long"
+				resultType="String">
+		SELECT
+				DRIVE_ROUTE_IMAGE
+		  FROM
+		  	    EV_DRIVE_ROUTE_IMAGE
+		 WHERE
+		 		BOARD_NO = #{boardNo}
+	</select>
 	
 	<insert id="updateBoardFile">
 		INSERT

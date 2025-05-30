@@ -31,6 +31,7 @@ public class DRBoardController {
 	
 	private final DRBoardService drBoardService;
 	
+	// 게시글 등록
 	@PostMapping("/insert")
 	public ResponseEntity<?> insertBoard(@ModelAttribute @Valid DRBoardDTO drBoard,
 									     @RequestParam("boardFiles") MultipartFile[] boardFiles,
@@ -40,6 +41,7 @@ public class DRBoardController {
 		return ResponseEntity.status(HttpStatus.CREATED).body("게시글이 등록되었습니다");
 	}
 	
+	// 게시글 조회
 	@GetMapping("/{currentPage}")
 	public ResponseEntity<?> selectBoard(@PathVariable(name="currentPage") int currentPage) {
 		
@@ -49,6 +51,18 @@ public class DRBoardController {
 		return ResponseEntity.status(HttpStatus.CREATED).body(map);
 	}
 	
+	// 게시글 수정
+	@PostMapping("/update")
+	public ResponseEntity<?> updateBoard(@ModelAttribute DRBoardDTO drBoard,
+										 @RequestPart(value = "boardFiles", required = false) MultipartFile[] boardFiles,
+									     @RequestParam("drFile") MultipartFile drFile) {
+		log.info("drBoard : {},{} ,boardFiles : {}, drFile : {}",drBoard.getBoardContent(),drBoard.getBoardWriter(),boardFiles,drFile);
+		drBoardService.updateBoard(drBoard,boardFiles,drFile);
+		
+		return ResponseEntity.status(HttpStatus.CREATED).body("게시글이 등록되었습니다");
+	}
+
+	// 게시글 삭제
 	@DeleteMapping("/delete/{boardNo}")
 	public ResponseEntity<?> deleteBoard(@PathVariable(name="boardNo") Long boardNo) {
 		
@@ -57,6 +71,8 @@ public class DRBoardController {
 		 return ResponseEntity.ok("게시글이 삭제되었습니다."); 
 	}
 
+	
+	
 	@GetMapping("/likes/{boardNo}")
 	public ResponseEntity<?> boardLikes(@PathVariable(name="boardNo") Long boardNo) {
 	
@@ -80,15 +96,5 @@ public class DRBoardController {
 		return ResponseEntity.status(HttpStatus.CREATED).body(boardLikesInfo);
 	}
 	
-	@PostMapping("/update")
-	public ResponseEntity<?> updateBoard(@ModelAttribute DRBoardDTO drBoard,
-										 @RequestPart(value = "boardFiles", required = false) MultipartFile[] boardFiles,
-									     @RequestParam("drFile") MultipartFile drFile) {
-		log.info("drBoard : {},{} ,boardFiles : {}, drFile : {}",drBoard.getBoardContent(),drBoard.getBoardWriter(),boardFiles,drFile);
-		drBoardService.updateBoard(drBoard,boardFiles,drFile);
-		
-		
-		return ResponseEntity.status(HttpStatus.CREATED).body("게시글이 등록되었습니다");
-	}
 
 }

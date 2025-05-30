@@ -51,11 +51,7 @@ public class ReservationServiceImpl implements ReservationService {
 		if("24개월".equals(period)) {
 			dealPercent += 0.05;
 			months += 24;
-<<<<<<< HEAD
-		}else if("30개월".equals(period)){
-=======
 		}else if("30개월".equals(period)) {
->>>>>>> 7f5bb283cf47432abc783090645fa0e930a339e4
 			dealPercent += 0.1;
 			months += 30;
 		}

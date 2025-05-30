@@ -20,8 +20,8 @@ public interface DRBoardMapper {
 	void insertDriveRouteFile(DRBoardVo driveRouteFileData);
 	
 	List<DRBoardDTO> getAllBoard(RowBounds rowBounds);
-	List<DRBoardDTO> getAllBoardImages( @Param("min") Long minBoardNo,
-										@Param("max") Long maxBoardNo);
+	List<DRBoardDTO> getAllBoardImages( @Param("min") Long min,
+										@Param("max") Long max);
 
 	int countBoardByBoardNo(Long boardNo);
 
@@ -31,7 +31,8 @@ public interface DRBoardMapper {
 	void updateDriveRouteFile(DRBoardVo driveRouteFileData);
 	// 게시글 삭제 상태바꾸
 	void deleteBoard(Long boardNo);
-
+	List<String> getBoardImageUrl(Long boardNo);
+	String getDriveRouteImageUrl(Long boardNo);
 	
 	// 게시글 좋아요 insert
 	void boardLikes(DRBoardVo boardLikesData);
@@ -39,6 +40,10 @@ public interface DRBoardMapper {
 	void boardLikesCancel(DRBoardVo boardLikesCancelData);
 	// 좋아요 조회
 	List<DRBoardDTO> selectBoardLikes(Long boardWriter);
+
+
+
+
 
 
 

@@ -15,6 +15,8 @@ import com.example.evcs.common.board.BoardUtil;
 import com.example.evcs.common.board.PageInfo;
 import com.example.evcs.common.board.Pagination;
 import com.example.evcs.common.file.FileUtil;
+import com.example.evcs.common.model.service.S3Service;
+import com.example.evcs.common.model.service.S3ServiceImpl;
 import com.example.evcs.event.model.dao.EventMapper;
 import com.example.evcs.event.model.dto.EventDTO;
 import com.example.evcs.event.model.vo.Event;
@@ -28,12 +30,12 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class EventServiceImpl implements EventService {
 
+	private final S3Service s3Service;
 	private final EventMapper eventMapper;
 	private final AuthService authService;
 	private final BoardUtil boardUtil;
-	
-	// 의존성 주입 문제로 new 로 생성
-	private FileUtil fileUtil = new FileUtil("uploads/event");
+	private final FileUtil fileUtil;
+	private String fileLocation = "event-image";
 	
 	@Override
 	public void insertEvent(EventDTO event, MultipartFile file) {
@@ -56,7 +58,7 @@ public class EventServiceImpl implements EventService {
 		eventMapper.insertEvent(requestData);
 		
 		if(file != null && !file.isEmpty()) {
-			String filePath = fileUtil.saveFile(file);
+			String filePath = s3Service.uploadFile(file,fileLocation);
 
 			eventMapper.insertEventFile(filePath);
 			
@@ -119,7 +121,7 @@ public class EventServiceImpl implements EventService {
 		
 		if(file != null && !file.isEmpty()) {
 			Map<String, String> map = new HashMap<String, String>();
-			String filePath = fileUtil.saveFile(file);
+			String filePath = s3Service.uploadFile(file,fileLocation);
 			
 			map.put("filePath", filePath);
 			map.put("eventNo", String.valueOf(event.getEventNo()));
