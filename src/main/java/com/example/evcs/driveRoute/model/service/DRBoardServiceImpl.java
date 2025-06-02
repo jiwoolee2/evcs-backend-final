@@ -110,6 +110,9 @@ public class DRBoardServiceImpl implements DRBoardService {
 		int boardPerPage = 10;
 		RowBounds rowBounds = new RowBounds(0,boardPerPage*currentPage);
 		List<DRBoardDTO> drBoard = drBoardMapper.getAllBoard(rowBounds);
+		for(DRBoardDTO i : drBoard) {
+			log.info("drBoard: {}",i);
+		}
 		map.put("drBoard", drBoard);
 		return map;
 	}
@@ -202,23 +205,14 @@ public class DRBoardServiceImpl implements DRBoardService {
 	
 	@Override
 	public void boardLikes(Long boardNo) {
-		Long memberNo = getMemberNo();
-		DRBoardVo boardLikesData = DRBoardVo.builder()
-											 .boardWriter(memberNo)
-											 .boardNo(boardNo)
-											 .build();
+		DRBoardVo boardLikesData = getDRBoardVo(boardNo);
 		drBoardMapper.boardLikes(boardLikesData);
 	}
 
 	@Override
 	public void boardLikesCancel(Long boardNo) {
-		Long memberNo = getMemberNo();
-		
-		DRBoardVo boardLikesCancelData = DRBoardVo.builder()
-											 .boardWriter(memberNo)
-											 .boardNo(boardNo)
-											 .build();
-		drBoardMapper.boardLikesCancel(boardLikesCancelData);
+		DRBoardVo boardLikesData = getDRBoardVo(boardNo);
+		drBoardMapper.boardLikesCancel(boardLikesData);
 	}
 
 	@Override
@@ -227,6 +221,15 @@ public class DRBoardServiceImpl implements DRBoardService {
 		List<DRBoardDTO> boardLikesInfo = drBoardMapper.selectBoardLikes(boardWriter);
 		log.info("boardLikesInfo:{}",boardLikesInfo);
 		return boardLikesInfo;
+	}
+	
+	private DRBoardVo getDRBoardVo(Long boardNo) {
+		Long memberNo = getMemberNo();
+		DRBoardVo boardLikesData = DRBoardVo.builder()
+											 .boardWriter(memberNo)
+											 .boardNo(boardNo)
+											 .build();
+		return boardLikesData;		
 	}
 
 	
