@@ -18,19 +18,18 @@ public interface DRBoardMapper {
 	Long getBoardNo();
 	void insertBoardFile(DRBoardVo boardFileData);
 	void insertDriveRouteFile(DRBoardVo driveRouteFileData);
-	
 	List<DRBoardDTO> getAllBoard(RowBounds rowBounds);
-
-
 	int countBoardByBoardNo(Long boardNo);
 
 	// 게시글 수정
 	int updateBoard(DRBoardVo drBoardData);
+	
 	void updateBoardFile(DRBoardVo boardFileData);
 	void updateDriveRouteFile(DRBoardVo driveRouteFileData);
 	
-	// 게시글 삭제 상태바꾸
+	// 게시글 삭제 상태바꾸기
 	void deleteBoard(Long boardNo);
+	
 	List<String> getBoardImageUrl(Long boardNo);
 	String getDriveRouteImageUrl(Long boardNo);
 	

@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.example.evcs.common.model.dto.ResponseData;
+import com.example.evcs.common.response.ResponseUtil;
 import com.example.evcs.driveRoute.model.dto.DRBoardDTO;
 import com.example.evcs.driveRoute.model.service.DRBoardService;
 
@@ -29,6 +31,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class DRBoardController {
 	
+	private final ResponseUtil responseUtil;
 	private final DRBoardService drBoardService;
 	
 	// 게시글 등록
@@ -37,8 +40,8 @@ public class DRBoardController {
 									     @RequestParam("boardFiles") MultipartFile[] boardFiles,
 									     @RequestParam("drFile") MultipartFile drFile) {
 		drBoardService.insertBoard(drBoard,boardFiles,drFile);
-		
-		return ResponseEntity.status(HttpStatus.CREATED).body("게시글이 등록되었습니다");
+		ResponseData data = responseUtil.getResponseData("게시물이 등록되었습니다.","200");
+		return ResponseEntity.ok(data);
 	}
 	
 	// 게시글 조회
@@ -47,8 +50,9 @@ public class DRBoardController {
 		
 		log.info("currentPage : {}",currentPage);
 		Map<String,Object> map = drBoardService.selectBoard(currentPage);
-		
-		return ResponseEntity.status(HttpStatus.CREATED).body(map);
+		ResponseData data = responseUtil.getResponseData(map,"게시물이 조회되었습니다.","200");
+				
+		return ResponseEntity.ok(data);
 	}
 	
 	// 게시글 수정
@@ -56,11 +60,11 @@ public class DRBoardController {
 	public ResponseEntity<?> updateBoard(@ModelAttribute DRBoardDTO drBoard,
 										 @RequestPart(value = "boardFiles", required = false) MultipartFile[] boardFiles,
 									     @RequestParam("drFile") MultipartFile drFile) {
-		log.info("drBoard : {},{} ,boardFiles : {}, drFile : {}",drBoard.getBoardContent(),drBoard.getBoardWriter(),boardFiles,drFile);
 		drBoardService.updateBoard(drBoard,boardFiles,drFile);
-		
-		return ResponseEntity.status(HttpStatus.CREATED).body("게시글이 등록되었습니다");
+		  ResponseData data = responseUtil.getResponseData("게시물이 수정되었습니다.", "200");
+		    return ResponseEntity.ok(data); 
 	}
+	
 
 	// 게시글 삭제
 	@DeleteMapping("/delete/{boardNo}")
@@ -68,17 +72,17 @@ public class DRBoardController {
 		
 		log.info("boardNo : {}",boardNo);
 		drBoardService.deleteBoard(boardNo);
-		 return ResponseEntity.ok("게시글이 삭제되었습니다."); 
+		ResponseData data = responseUtil.getResponseData("게시물이 삭제되었습니다.","200");
+		return ResponseEntity.ok(data);
 	}
 
-	
-	
 	@GetMapping("/likes/{boardNo}")
 	public ResponseEntity<?> boardLikes(@PathVariable(name="boardNo") Long boardNo) {
 	
 		log.info("boardNo : {}",boardNo);
 		drBoardService.boardLikes(boardNo);
-		 return ResponseEntity.ok("좋아요 눌림"); 
+		ResponseData data = responseUtil.getResponseData("좋아요 누름","200");
+		 return ResponseEntity.ok(data); 
 	}
 	
 	@DeleteMapping("/likesCancel/{boardNo}")
@@ -86,15 +90,18 @@ public class DRBoardController {
 		
 		log.info("boardNo : {}",boardNo);
 		drBoardService.boardLikesCancel(boardNo);
-		 return ResponseEntity.ok("좋아요 취소"); 
+		ResponseData data = responseUtil.getResponseData("좋아요 취소","200");
+		 return ResponseEntity.ok(data); 
 	}
 	
 	@GetMapping("/selectLikes")
 	public ResponseEntity<?> selectBoardLikes() {
-		log.info("잘 들어오나요?");
 		List<DRBoardDTO> boardLikesInfo = drBoardService.selectBoardLikes();
-		return ResponseEntity.status(HttpStatus.CREATED).body(boardLikesInfo);
+		ResponseData data = responseUtil.getResponseData(boardLikesInfo,"게시물 좋아요 조회","201");
+		return ResponseEntity.ok(data);
 	}
+	
+
 	
 
 }

@@ -10,12 +10,14 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Valid
+@ToString
 public class DRBoardDTO {
 
 	    private Long boardNo;
@@ -27,7 +29,6 @@ public class DRBoardDTO {
 	    private String status;
 	    private List<DRBoardImageDTO> drBoardImage;
 	    private DriveRouteImageDTO driveRouteImage;
-	    
 	    private String memberNickName;
-	    private int likeCount;
+	    private int likesCount;
 }
