@@ -68,6 +68,7 @@ public class DRBoardServiceImpl implements DRBoardService {
 	private DRBoardVo getBoardVo(DRBoardDTO drBoard) {
 		Long memberNo = getMemberNo();
 		DRBoardVo drBoardData = DRBoardVo.builder()
+				 .boardNo(drBoard.getBoardNo())
 				 .boardWriter(memberNo)
 				 .boardContent(drBoard.getBoardContent())
 				 .build();
@@ -123,10 +124,14 @@ public class DRBoardServiceImpl implements DRBoardService {
 	public void updateBoard(DRBoardDTO drBoard, MultipartFile[] boardFiles, MultipartFile drFile) {
 		handleException2(drBoard,drFile);
 	    DRBoardVo drBoardData = getBoardVo(drBoard);
+	    log.info("drBoardData : {}",drBoardData);
+	    log.info("boardFiles : {}",boardFiles);
+	    log.info("drFile : {}",drFile);
 	    int result = drBoardMapper.updateBoard(drBoardData);
 
 	    if (result == 1) {
 	    	updateBoardFile(drBoard,boardFiles);
+	    	deleteDriveRouteImage(drBoard.getBoardNo());
 	        insertDriveRouteFile(drFile,drBoardData);
 	   
 	    }
@@ -134,6 +139,7 @@ public class DRBoardServiceImpl implements DRBoardService {
 	
 	private void updateBoardFile(DRBoardDTO drBoard,MultipartFile[] boardFiles) {
 		fileLocation = "driveroute-map-image/";
+		if(boardFiles == null) return;
 		if (boardFiles != null && boardFiles.length > 0) {
             for (MultipartFile file : boardFiles) {
                 if (file != null && !file.isEmpty()) {

@@ -70,8 +70,8 @@
 		<result property="boardContent" column="boardContent"/>
 		<result property="createDate" column="createDate"/>
 		<result property="status" column="status"/>
-		<result property="likesCount" column="likesCount"/>
 		<result property="memberNickName" column="memberNickName"/>
+		<result property="likesCount" column="likesCount"/>
 		
 		<association property="driveRouteImage" javaType="DriveRouteImageDTO">
 			<id property="boardNo" column="boardNo"/>
