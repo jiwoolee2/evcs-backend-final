@@ -149,6 +149,25 @@
 		 		BOARD_NO = #{boardNo}
 	</update>
 	
+	
+	<delete id="delteDriveRouteUrl"
+	            parameterType="Long">
+		DELETE
+		  FROM
+		       EV_DRIVE_ROUTE_IMAGE
+		 WHERE
+		       BOARD_NO = #{boardNo}
+	</delete>
+	
+	<delete id="deleteBoardUrl"
+	            parameterType="Long">
+		DELETE
+		  FROM
+		       EV_BOARD_IMAGE
+		 WHERE
+		       BOARD_NO = #{boardNo}
+	</delete>
+	
 	<select id="getBoardImageUrl"
 				parameterType="Long"
 				resultType="String">
