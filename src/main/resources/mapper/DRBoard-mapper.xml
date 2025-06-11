@@ -139,6 +139,28 @@
 		 		BOARD_NO = #{boardNo}
 	</update>
 	
+	<insert id="updateBoardFile">
+		INSERT
+		  INTO	
+		  		EV_BOARD_IMAGE(
+					  BOARD_NO
+					, BOARD_IMAGE
+				)
+		  		VALUES(
+					  #{boardNo}
+					, #{boardImage}
+				)	
+	</insert>
+	
+	<update id="updateDriveRouteFile">
+		UPDATE
+				EV_DRIVE_ROUTE_IMAGE
+		   SET
+		   		DRIVE_ROUTE_IMAGE = #{driveRouteImage}
+		 WHERE
+		 		BOARD_NO = #{boardNo} 	
+	</update>
+	
 	<update id="deleteBoard"
 				parameterType="Long">
 		UPDATE
@@ -171,28 +193,7 @@
 		 		BOARD_NO = #{boardNo}
 	</select>
 	
-	<insert id="updateBoardFile">
-		INSERT
-		  INTO	
-		  		EV_BOARD_IMAGE(
-					  BOARD_NO
-					, BOARD_IMAGE
-				)
-		  		VALUES(
-					  #{boardNo}
-					, #{boardImage}
-				)	
-	</insert>
-	
-	<update id="updateDriveRouteFile">
-		UPDATE
-				EV_DRIVE_ROUTE_IMAGE
-		   SET
-		   		DRIVE_ROUTE_IMAGE = #{driveRouteImage}
-		 WHERE
-		 		BOARD_NO = #{boardNo} 	
-	</update>
-	
+
 	<insert id="boardLikes"
 				parameterType="DRBoardVo">
 		INSERT
