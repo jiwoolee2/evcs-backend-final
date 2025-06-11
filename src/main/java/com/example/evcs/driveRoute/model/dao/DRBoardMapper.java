@@ -32,6 +32,8 @@ public interface DRBoardMapper {
 	
 	List<String> getBoardImageUrl(Long boardNo);
 	String getDriveRouteImageUrl(Long boardNo);
+	void deleteBoardUrl(Long boardNo);
+	void delteDriveRouteUrl(Long boardNo);
 	
 	// 게시글 좋아요 insert
 	void boardLikes(DRBoardVo boardLikesData);
@@ -39,6 +41,8 @@ public interface DRBoardMapper {
 	void boardLikesCancel(DRBoardVo boardLikesCancelData);
 	// 좋아요 조회
 	List<DRBoardDTO> selectBoardLikes(Long boardWriter);
+
+
 
 
 

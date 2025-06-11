@@ -127,18 +127,29 @@ public class DRBoardServiceImpl implements DRBoardService {
 	    log.info("drBoardData : {}",drBoardData);
 	    log.info("boardFiles : {}",boardFiles);
 	    log.info("drFile : {}",drFile);
-	    int result = drBoardMapper.updateBoard(drBoardData);
+	    int result = drBoardMapper.updateBoard(drBoardData); // 1. 게시물 내용 수정
+	    // 2. boardImage 테이블 수정
+	    
+	    // 3. DriveROuteImage 테이블 수정
 
 	    if (result == 1) {
-	    	updateBoardFile(drBoard,boardFiles);
-	    	deleteDriveRouteImage(drBoard.getBoardNo());
-	        insertDriveRouteFile(drFile,drBoardData);
+	    	if (boardFiles != null) {
+	    		updateBoardFile(drBoard,boardFiles); // 게시물 사진 DB 올리기,s3에도 올리기
+	    	}
+	    	deleteDriveRouteImage(drBoard.getBoardNo()); // s3 에서 경로사진 삭제
+	    	delteDriveRouteUrl(drBoard.getBoardNo());    // db 에서 경로사진 삭제
+	        insertDriveRouteFile(drFile,drBoardData);    // db,s3 경로 사진 올리기
 	   
 	    }
 	}
 	
+	private void delteDriveRouteUrl(Long boardNo) {
+		drBoardMapper.delteDriveRouteUrl(boardNo);
+		
+	}
+
 	private void updateBoardFile(DRBoardDTO drBoard,MultipartFile[] boardFiles) {
-		fileLocation = "driveroute-map-image/";
+		fileLocation = "board-image/";
 		if(boardFiles == null) return;
 		if (boardFiles != null && boardFiles.length > 0) {
             for (MultipartFile file : boardFiles) {
@@ -174,9 +185,16 @@ public class DRBoardServiceImpl implements DRBoardService {
 			drBoardMapper.deleteBoard(boardNo);
 			deleteBoardImage(boardNo);
 			deleteDriveRouteImage(boardNo);
+			deleteBoardUrl(boardNo);
+			delteDriveRouteUrl(boardNo);
 		}
 	}
 	
+	private void deleteBoardUrl(Long boardNo) {
+		drBoardMapper.deleteBoardUrl(boardNo);
+		
+	}
+
 	private void deleteBoardImage(Long boardNo) {
 		List<String> boardImageUrl = getBoardImageUrl(boardNo);
 		for(String url : boardImageUrl) {
