@@ -60,6 +60,7 @@ public class DRBoardController {
 	public ResponseEntity<?> updateBoard(@ModelAttribute DRBoardDTO drBoard,
 										 @RequestPart(value = "boardFiles", required = false) MultipartFile[] boardFiles,
 									     @RequestParam("drFile") MultipartFile drFile) {
+		log.info("drBoard : {}",drBoard);
 		drBoardService.updateBoard(drBoard,boardFiles,drFile);
 		  ResponseData data = responseUtil.getResponseData("게시물이 수정되었습니다.", "200");
 		    return ResponseEntity.ok(data); 
