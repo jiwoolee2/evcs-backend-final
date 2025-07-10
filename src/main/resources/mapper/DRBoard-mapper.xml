@@ -172,7 +172,7 @@
 	</update>
 	
 	
-	<delete id="delteDriveRouteUrl"
+	<delete id="deleteDriveRouteUrl"
 	            parameterType="Long">
 		DELETE
 		  FROM
