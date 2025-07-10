@@ -115,6 +115,7 @@ public class DRBoardServiceImpl implements DRBoardService {
 			log.info("drBoard: {}",i);
 		}
 		map.put("drBoard", drBoard);
+		log.info("drBoard : {}",drBoard);
 		return map;
 	}
 	
