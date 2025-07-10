@@ -29,7 +29,6 @@ public class DRBoardDTO {
 	    private String status;
 	    private List<DRBoardImageDTO> drBoardImage;
 	    private DriveRouteImageDTO driveRouteImage;
-	    
 	    private String memberNickName;
-	    private int likeCount;
+	    private int likesCount;
 }

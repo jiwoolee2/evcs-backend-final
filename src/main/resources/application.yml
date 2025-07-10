@@ -46,8 +46,8 @@ mybatis:
     jdbc-type-for-null: VARCHAR
   mapper-locations: classpath:mapper/*.xml
 
-  type-aliases-package: 
-    com.example.evcs.admin.carInfo.model.vo , com.example.evcs.admin.carInfo.model.dto, com.example.evcs.admin.rentCarInfo.model.dto, com.example.evcs.admin.rentCarInfo.model.vo 
+  type-aliases-package:
+    com.example.evcs.admin.carInfo.model.vo , com.example.evcs.admin.carInfo.model.dto, com.example.evcs.admin.rentCarInfo.model.dto, com.example.evcs.admin.rentCarInfo.model.vo
     com.example.evcs.event.model.vo, com.example.evcs.event.model.dto, com.example.evcs.reporting.model.vo,
     com.example.evcs.admin.garage.model.vo, com.example.evcs.admin.garage.model.dto
     com.example.evcs.admin.reservation.model.vo ,com.example.evcs.admin.reservation.model.dto

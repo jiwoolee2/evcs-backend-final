@@ -64,48 +64,19 @@
 				)
 	</insert>
 	
-<!--	<select id="getAllBoard"
-				resultType="DRBoardDTO">
-		SELECT
-				  B1.BOARD_NO boardNo
-				, B1.BOARD_WRITER boardWriter
-				, B1.BOARD_CONTENT boardContent
-				, BI.BOARD_IMAGE AS boardImage
-				, B1.CREATE_DATE createDate
-				, B1.STATUS status
-				, I1.DRIVE_ROUTE_IMAGE driveRouteImage
-				, E1.MEMBER_NICKNAME memberNickName
-				, (SELECT COUNT(*) 
-				   FROM EV_BOARD_LIKES BL 
-				   WHERE BL.BOARD_NO = B1.BOARD_NO) AS likeCount
-		  FROM
-		  		EV_DRIVE_ROUTE_BOARD B1
-		  JOIN
-		  		EV_MEMBER E1 ON (E1.MEMBER_NO = B1.BOARD_WRITER)
-		  JOIN
-		  		EV_DRIVE_ROUTE_IMAGE I1 ON (I1.BOARD_NO = B1.BOARD_NO)
-	RIGHT JOIN
-	      		EV_BOARD_IMAGE BI ON BI.BOARD_NO = B1.BOARD_NO
-		 WHERE
-		 		B1.STATUS = 'Y'
-		 ORDER
-		    BY
-		    	B1.BOARD_NO DESC
-	</select>-->
-	
 	<resultMap id="DRBoardMap" type="DRBoardDTO">
 		<id property="boardNo" column="boardNo"/>
 		<result property="boardWriter" column="boardWriter"/>
 		<result property="boardContent" column="boardContent"/>
 		<result property="createDate" column="createDate"/>
 		<result property="status" column="status"/>
-	
+		<result property="likesCount" column="likesCount"/>
+		<result property="memberNickName" column="memberNickName"/>
 		<association property="driveRouteImage" javaType="DriveRouteImageDTO">
 			<id property="boardNo" column="boardNo"/>
 			<result property="driveRouteImage" column="driveRouteImage"/>
 		</association>
-		
-		<collection property="drBoardImage" ofType="DRBoardImageDTO">
+		<collection property="drBoardImage" ofType="DRBoardImageDTO" javaType="List">
 			<id property="boardImageNo" column="boardImageNo"/>
 			<result property="boardNo" column="boardNo"/>
 			<result property="boardImage" column="boardImage"/>
@@ -125,19 +96,20 @@
 				, DR.STATUS status
 				, DI.DRIVE_ROUTE_IMAGE driveRouteImage
 				, EM.MEMBER_NICKNAME memberNickName
-				, (SELECT COUNT(*) 
-				   FROM EV_BOARD_LIKES BL 
-				   WHERE BL.BOARD_NO = DR.BOARD_NO) AS likeCount
+				, BL.likesCount likesCount
 		  FROM
 		  		EV_DRIVE_ROUTE_BOARD DR
 		  JOIN
 		  		EV_MEMBER EM ON (EM.MEMBER_NO = DR.BOARD_WRITER)
 		  JOIN
 		  		EV_DRIVE_ROUTE_IMAGE DI ON (DI.BOARD_NO = DR.BOARD_NO)
-	RIGHT JOIN
+	 LEFT JOIN
 	      		EV_BOARD_IMAGE BI ON BI.BOARD_NO = DR.BOARD_NO
+	 LEFT JOIN
+	            (SELECT BOARD_NO, COUNT(*) AS likesCount FROM EV_BOARD_LIKES
+	             GROUP BY BOARD_NO) BL ON (BL.BOARD_NO = DR.BOARD_NO)
 		 WHERE
-		 		DR.STATUS = 'Y'
+		 		DR.STATUS = 'Y'	
 		 ORDER
 		    BY
 		    	DR.BOARD_NO DESC
