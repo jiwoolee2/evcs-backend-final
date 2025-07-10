@@ -111,6 +111,7 @@ public class DRBoardServiceImpl implements DRBoardService {
 		RowBounds rowBounds = new RowBounds(0,boardPerPage*currentPage);
 		List<DRBoardDTO> drBoard = drBoardMapper.getAllBoard(rowBounds);
 		map.put("drBoard", drBoard);
+		log.info("drBoard : {}",drBoard);
 		return map;
 	}
 	

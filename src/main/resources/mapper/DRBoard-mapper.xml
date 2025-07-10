@@ -94,21 +94,21 @@
 	</select>-->
 	
 	<resultMap id="DRBoardMap" type="DRBoardDTO">
-		<id property="boardNo" column="BOARD_NO"/>
-		<result property="boardWriter" column="BOARD_WRITER"/>
-		<result property="boardContent" column="BOARD_CONTENT"/>
-		<result property="createDate" column="CREATE_DATE"/>
-		<result property="status" column="STATUS"/>
+		<id property="boardNo" column="boardNo"/>
+		<result property="boardWriter" column="boardWriter"/>
+		<result property="boardContent" column="boardContent"/>
+		<result property="createDate" column="createDate"/>
+		<result property="status" column="status"/>
 	
-		<association property="driveRouteImage" javaType="com.evcs.driveRoute.model.dto.DriveRouteImageDTO">
-			<id property="boardNo" column="BOARD_NO"/>
-			<result property="driveRouteImage" column="DRIVE_ROUTE_IMAGE"/>
+		<association property="driveRouteImage" javaType="DriveRouteImageDTO">
+			<id property="boardNo" column="boardNo"/>
+			<result property="driveRouteImage" column="driveRouteImage"/>
 		</association>
 		
-		<collection property="drBoardImage" ofType="com.evcs.driveRoute.model.dto.DRBoardImageDTO">
-			<id property="boardImageNo" column="BOARD_IMAGE_NO"/>
-			<result property="boardNo" column="BOARD_NO"/>
-			<result property="boardImage" column="BOARD_IMAGE"/>
+		<collection property="drBoardImage" ofType="DRBoardImageDTO">
+			<id property="boardImageNo" column="boardImageNo"/>
+			<result property="boardNo" column="boardNo"/>
+			<result property="boardImage" column="boardImage"/>
 		</collection>
 		
 	</resultMap>

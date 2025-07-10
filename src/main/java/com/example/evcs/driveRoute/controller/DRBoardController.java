@@ -47,8 +47,8 @@ public class DRBoardController {
 		
 		log.info("currentPage : {}",currentPage);
 		Map<String,Object> map = drBoardService.selectBoard(currentPage);
-		
-		return ResponseEntity.status(HttpStatus.CREATED).body(map);
+		log.info("map :{}",map);
+		 return ResponseEntity.ok(map); 
 	}
 	
 	// 게시글 수정

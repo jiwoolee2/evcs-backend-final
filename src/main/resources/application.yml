@@ -33,7 +33,7 @@ spring:
     enabled: false
 
 server:
-  port: 80
+  port: 9091
 
 servlet:
   multipart:
@@ -53,7 +53,7 @@ mybatis:
     com.example.evcs.admin.reservation.model.vo ,com.example.evcs.admin.reservation.model.dto
     com.example.evcs.driveRoute.model.vo ,com.example.evcs.driveRoute.model.dto
     com.example.evcs.admin.hotdeal.model.vo, com.example.evcs.admin.hotdeal.model.dto
-    com.example.evcs.reservation.model.dto
+    com.example.evcs.reservation.model.dto,
 
 logging:
   level:
