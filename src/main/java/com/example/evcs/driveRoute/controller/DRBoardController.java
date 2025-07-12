@@ -66,7 +66,6 @@ public class DRBoardController {
 		    return ResponseEntity.ok(data); 
 	}
 	
-
 	// 게시글 삭제
 	@DeleteMapping("/delete/{boardNo}")
 	public ResponseEntity<?> deleteBoard(@PathVariable(name="boardNo") Long boardNo) {

@@ -115,6 +115,7 @@ public class DRBoardServiceImpl implements DRBoardService {
 			log.info("drBoard: {}",i);
 		}
 		map.put("drBoard", drBoard);
+		log.info("drBoard : {}",drBoard);
 		return map;
 	}
 	
@@ -137,14 +138,14 @@ public class DRBoardServiceImpl implements DRBoardService {
 	    		updateBoardFile(drBoard,boardFiles); // 게시물 사진 DB 올리기,s3에도 올리기
 	    	}
 	    	deleteDriveRouteImage(drBoard.getBoardNo()); // s3 에서 경로사진 삭제
-	    	delteDriveRouteUrl(drBoard.getBoardNo());    // db 에서 경로사진 삭제
+	    	deleteDriveRouteUrl(drBoard.getBoardNo());    // db 에서 경로사진 삭제
 	        insertDriveRouteFile(drFile,drBoardData);    // db,s3 경로 사진 올리기
 	   
 	    }
 	}
 	
-	private void delteDriveRouteUrl(Long boardNo) {
-		drBoardMapper.delteDriveRouteUrl(boardNo);
+	private void deleteDriveRouteUrl(Long boardNo) {
+		drBoardMapper.deleteDriveRouteUrl(boardNo);
 		
 	}
 
@@ -186,7 +187,7 @@ public class DRBoardServiceImpl implements DRBoardService {
 			deleteBoardImage(boardNo);
 			deleteDriveRouteImage(boardNo);
 			deleteBoardUrl(boardNo);
-			delteDriveRouteUrl(boardNo);
+			deleteDriveRouteUrl(boardNo);
 		}
 	}
 	

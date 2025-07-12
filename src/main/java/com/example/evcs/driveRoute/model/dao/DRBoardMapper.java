@@ -33,7 +33,7 @@ public interface DRBoardMapper {
 	List<String> getBoardImageUrl(Long boardNo);
 	String getDriveRouteImageUrl(Long boardNo);
 	void deleteBoardUrl(Long boardNo);
-	void delteDriveRouteUrl(Long boardNo);
+	void deleteDriveRouteUrl(Long boardNo);
 	
 	// 게시글 좋아요 insert
 	void boardLikes(DRBoardVo boardLikesData);
