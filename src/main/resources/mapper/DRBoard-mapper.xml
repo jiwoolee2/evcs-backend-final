@@ -9,7 +9,7 @@
 	<insert id="insertBoard"
 				parameterType = "DRBoardVo">
 				
-		<selectKey keyProperty="boardNo" order="AFTER" resultType="Long">
+		<selectKey keyProperty="boardNo" order="AFTER" resultType="Long"> 
 			SELECT 
 					BOARD_NO boardNo 
 			  FROM		

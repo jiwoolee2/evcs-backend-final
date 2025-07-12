@@ -116,14 +116,14 @@ public class RentCarInfoServiceImpl implements RentCarInfoService {
 		
 		Map<String, Object> returnmap = new HashMap();
 		
-		int carNoPerPage = 10;
+		int boardNoPerPage = 10;
 		int pageSize = 5;
 		int currentPage = Integer.parseInt(map.get("currentPage"));
 		
-		RowBounds rowBounds = new RowBounds((currentPage-1)*carNoPerPage,carNoPerPage);
-		int totalRentCarNo = rentCarInfoMapper.countAllRentCar();
+		RowBounds rowBounds = new RowBounds((currentPage-1)*boardNoPerPage,boardNoPerPage);
+		int totalBoardNo = rentCarInfoMapper.countAllRentCar();
 		
-		PageInfo pageInfo = Pagination.getPageInfo(currentPage,  pageSize, carNoPerPage,totalRentCarNo);
+		PageInfo pageInfo = Pagination.getPageInfo(currentPage,  pageSize, boardNoPerPage,totalBoardNo);
 		
 		List<RentCarInfoDTO> rentCarInfo = rentCarInfoMapper.getRentCarList(map, rowBounds);
 		
