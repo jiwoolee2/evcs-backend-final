@@ -9,6 +9,7 @@ import com.example.evcs.news.model.service.NaverSearchService;
 
 @RestController
 @RequestMapping("/api")
+@CrossOrigin(origins = "*")
 public class NaverSearchController {
 
     private final NaverSearchService naverSearchService;
