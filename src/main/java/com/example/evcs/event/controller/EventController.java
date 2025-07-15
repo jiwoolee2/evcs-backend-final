@@ -29,7 +29,7 @@ import lombok.extern.slf4j.Slf4j;
 @RestController
 @Validated
 @RequiredArgsConstructor
-@RequestMapping("/admin-events")
+@RequestMapping("/api/admin-events")
 public class EventController {
 
 	private final EventService eventService;

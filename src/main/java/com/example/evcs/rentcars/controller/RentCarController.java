@@ -19,7 +19,7 @@ import lombok.extern.slf4j.Slf4j;
 @RestController
 @Validated
 @RequiredArgsConstructor
-@RequestMapping("/user-rentcars")
+@RequestMapping("/api/user-rentcars")
 public class RentCarController {
 	
 	private final RentCarService rentCarService; 

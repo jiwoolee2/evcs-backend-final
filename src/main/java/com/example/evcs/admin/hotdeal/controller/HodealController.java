@@ -26,7 +26,7 @@ import lombok.extern.slf4j.Slf4j;
 @RestController
 @Validated
 @RequiredArgsConstructor
-@RequestMapping("/admin-hotdeals")
+@RequestMapping("/api/admin-hotdeals")
 public class HodealController {
 	
 	private final HotdealService hotdealService; 

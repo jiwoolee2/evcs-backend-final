@@ -26,7 +26,7 @@ import lombok.extern.slf4j.Slf4j;
 @RestController
 @Validated
 @RequiredArgsConstructor
-@RequestMapping("/admin-garages")
+@RequestMapping("/api/admin-garages")
 public class GarageController {
 	private final GarageService garageService;
 	

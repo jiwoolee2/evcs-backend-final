@@ -21,7 +21,7 @@ import lombok.extern.slf4j.Slf4j;
 @Validated
 @RequiredArgsConstructor
 @CrossOrigin(origins = "*")
-@RequestMapping("/user-events")
+@RequestMapping("/api/user-events")
 public class EventUserController {
 	
 	private final EventService eventService;

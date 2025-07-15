@@ -27,7 +27,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @RestController
 @Slf4j
-@RequestMapping("/driveRouteBoard")
+@RequestMapping("/api/driveRouteBoard")
 @RequiredArgsConstructor
 public class DRBoardController {
 	

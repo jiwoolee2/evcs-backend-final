@@ -6,11 +6,11 @@ import java.nio.charset.StandardCharsets;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import com.example.evcs.oauth.kakao.model.dto.KakaoDTO.KakaoProfile;
 import com.example.evcs.oauth.kakao.model.dto.LoginMemberDTO;
 import com.example.evcs.oauth.kakao.model.service.OAuthService;
 
@@ -21,6 +21,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/api")
 public class OAuthController {
 
 	private final OAuthService oauthService;

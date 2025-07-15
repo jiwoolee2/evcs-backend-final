@@ -20,7 +20,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-@RequestMapping("admin")
+@RequestMapping("api/admin")
 @RestController
 @RequiredArgsConstructor
 public class AdminController {
