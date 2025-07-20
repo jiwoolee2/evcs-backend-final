@@ -1,7 +1,7 @@
 package com.example.evcs.news.model.service;
 
 
-import lombok.extern.slf4j.Slf4j;
+import java.net.URI;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
@@ -10,12 +10,15 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import com.example.evcs.news.model.dto.NewsMainImageDto;
 import com.example.evcs.news.model.dto.NewsMainResponseDto;
-import java.net.URI;
+
+import lombok.extern.slf4j.Slf4j;
 
 @Service
 @Slf4j
@@ -37,11 +40,15 @@ public class NaverSearchService {
     }
 
     public NewsMainResponseDto searchNews(String query) {
+        if (query == null || query.trim().isEmpty()) {
+            throw new IllegalArgumentException("검색어는 비어 있을 수 없습니다.");
+        }
+
         try {
             HttpHeaders headers = new HttpHeaders();
             headers.set("X-Naver-Client-Id", clientId);
             headers.set("X-Naver-Client-Secret", clientSecret);
-            headers.setContentType(org.springframework.http.MediaType.APPLICATION_JSON);
+            headers.setContentType(MediaType.APPLICATION_JSON);
 
             URI uri = UriComponentsBuilder
                     .fromUriString(apiUrl)
@@ -50,26 +57,27 @@ public class NaverSearchService {
                     .queryParam("display", 100)
                     .queryParam("sort", "sim")
                     .build()
-                    .encode() // << 꼭 인코딩 추가
+                    .encode()
                     .toUri();
 
-            log.info("요청 URI: {}", uri.toString()); // ✅ 여기 추가!
-
+            log.info("Naver 요청 URI: {}", uri);
 
             HttpEntity<String> entity = new HttpEntity<>(headers);
-
             ResponseEntity<NewsMainResponseDto> response = restTemplate.exchange(
-                    uri,
-                    HttpMethod.GET,
-                    entity,
-                    NewsMainResponseDto.class
+                    uri, HttpMethod.GET, entity, NewsMainResponseDto.class
             );
 
             return response.getBody();
-        } catch (Exception e) {
-            throw new RuntimeException("네이버 뉴스 검색 중 오류 발생: " + e.getMessage());
+
+        } catch (HttpClientErrorException e) {
+            log.error("Naver API 오류 응답: {}", e.getResponseBodyAsString());
+            throw new IllegalArgumentException("Naver API 오류: " + e.getResponseBodyAsString());
+        } catch (RestClientException e) {
+            log.error("Naver API 네트워크 오류: {}", e.getMessage());
+            throw new RuntimeException("Naver API 호출 실패");
         }
     }
+
     
     public NewsMainResponseDto searchNewsList(String query, String sort, int page, int size) {
         HttpHeaders headers = new HttpHeaders();

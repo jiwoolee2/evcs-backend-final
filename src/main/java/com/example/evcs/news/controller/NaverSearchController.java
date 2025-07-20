@@ -18,14 +18,16 @@ public class NaverSearchController {
         this.naverSearchService = naverSearchService;
     }
 
-    @GetMapping("/naver-news")  // 🆕 API 엔드포인트 변경
-    public ResponseEntity<NewsMainResponseDto> searchNews(@RequestParam("query") String query) {
+    @GetMapping("/naver-news")
+    public ResponseEntity<?> searchNews(@RequestParam("query") String query) {
         try {
             NewsMainResponseDto response = naverSearchService.searchNews(query);
             return ResponseEntity.ok(response);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
         } catch (Exception e) {
-        	e.printStackTrace(); // 실제 콘솔 로그로 에러 내용 확인
-            return ResponseEntity.internalServerError().body(null);
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().body("서버 내부 오류");
         }
     }
     
